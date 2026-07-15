@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>メニュー - エラッタオリジナリティ</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<body>
+
+    <main id="menu-screen">
+
+        <h1>
+            メニュー
+        </h1>
+
+
+        <div id="menu-buttons">
+
+
+            <button id="battle-button">
+                対戦
+            </button>
+
+
+            <button id="deck-button">
+                デッキ
+            </button>
+
+
+            <button id="collection-button">
+                カード一覧
+            </button>
+
+
+            <button id="profile-button">
+                プロフィール
+            </button>
+
+
+            <button id="settings-button">
+                設定
+            </button>
+
+
+        </div>
+
+
+    </main>
+
+
+    <script>
+
+        document.getElementById("battle-button")
+        .onclick = function(){
+            location.href = "battle.html";
+        };
+
+
+        document.getElementById("deck-button")
+        .onclick = function(){
+            location.href = "deck.html";
+        };
+
+
+        document.getElementById("collection-button")
+        .onclick = function(){
+            location.href = "collection.html";
+        };
+
+
+        document.getElementById("profile-button")
+        .onclick = function(){
+            location.href = "profile.html";
+        };
+
+
+        document.getElementById("settings-button")
+        .onclick = function(){
+            location.href = "settings.html";
+        };
+
+
+    </script>
+
+
+</body>
+
+</html>
