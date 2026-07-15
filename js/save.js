@@ -1,49 +1,141 @@
+// ===============================
+// エラッタオリジナリティ
+// 保存機能
+// ===============================
+
+
+
+
 // デッキ保存
 
-function saveDeck() {
+function saveDeck(){
 
-    const deckData = JSON.stringify(deck);
 
-    localStorage.setItem(
-        "errataDeck",
-        deckData
+    if(
+        typeof checkDeck === "function"
+    ){
+
+        if(
+            !checkDeck()
+        ){
+
+            return;
+
+        }
+
+    }
+
+
+
+
+    let name =
+    prompt(
+        "デッキ名を入力してください"
     );
 
-    alert("デッキを保存しました");
+
+
+    if(!name){
+
+        name = "無名デッキ";
+
+    }
+
+
+
+
+
+    const saveData = {
+
+
+        name:name,
+
+
+        cards:deck
+
+
+    };
+
+
+
+
+
+    localStorage.setItem(
+
+        "errataDeck",
+
+        JSON.stringify(saveData)
+
+    );
+
+
+
+    alert(
+        "デッキを保存しました"
+    );
+
+
 }
+
+
+
+
+
 
 
 
 // デッキ読み込み
 
-function loadDeck() {
+function loadDeck(){
+
 
     const data =
-        localStorage.getItem("errataDeck");
+    localStorage.getItem(
+        "errataDeck"
+    );
 
 
-    if(data === null){
 
-        alert("保存されたデッキがありません");
+    if(!data){
+
+        alert(
+            "保存データがありません"
+        );
 
         return;
 
     }
 
 
-    deck = JSON.parse(data);
+
+    const saveData =
+    JSON.parse(data);
 
 
-    if(typeof updateDeckDisplay === "function"){
 
-        updateDeckDisplay();
-
-    }
+    deck =
+    saveData.cards;
 
 
-    alert("デッキを読み込みました");
+
+    updateDeckDisplay();
+
+
+
+    alert(
+
+        saveData.name +
+        " を読み込みました"
+
+    );
+
 
 }
+
+
+
+
+
 
 
 
@@ -51,11 +143,20 @@ function loadDeck() {
 
 function deleteDeck(){
 
+
     localStorage.removeItem(
+
         "errataDeck"
+
     );
 
 
-    alert("デッキデータを削除しました");
+
+    alert(
+
+        "デッキを削除しました"
+
+    );
+
 
 }
