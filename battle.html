@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>対戦 - エラッタオリジナリティ</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+<main id="battle-screen">
+
+
+<h1>
+エラッタオリジナリティ
+</h1>
+
+
+
+<div id="turn-display">
+
+相手ターン
+
+</div>
+
+
+
+
+
+<!-- 相手情報 -->
+
+<section id="enemy-area">
+
+
+<h2>
+相手
+</h2>
+
+
+<p>
+LP:
+<span id="enemy-lp">
+8000
+</span>
+</p>
+
+
+<p>
+コスト:
+<span id="enemy-cost">
+0
+</span>
+</p>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- 相手フィールド -->
+
+<section>
+
+
+<h3>
+相手モンスター
+</h3>
+
+
+<div id="enemy-monster-zone"
+class="zone">
+
+
+</div>
+
+
+
+<h3>
+相手トラップ
+</h3>
+
+
+<div id="enemy-trap-zone"
+class="zone">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- 自分フィールド -->
+
+
+<section>
+
+
+<h3>
+自分モンスター
+</h3>
+
+
+<div id="player-monster-zone"
+class="zone">
+
+
+</div>
+
+
+
+
+<h3>
+自分トラップ
+</h3>
+
+
+<div id="player-trap-zone"
+class="zone">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- 自分情報 -->
+
+
+<section id="player-area">
+
+
+<h2>
+自分
+</h2>
+
+
+<p>
+LP:
+<span id="player-lp">
+8000
+</span>
+</p>
+
+
+
+<p>
+コスト:
+<span id="player-cost">
+1
+</span>
+</p>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- 手札 -->
+
+
+<h3>
+手札
+</h3>
+
+
+<div id="hand-zone">
+
+
+</div>
+
+
+
+
+
+
+
+<button id="end-turn">
+
+ターン終了
+
+</button>
+
+
+<button onclick="location.href='menu.html'">
+
+戻る
+
+</button>
+
+
+
+</main>
+
+
+
+
+<script src="js/game.js"></script>
+<script src="js/battle.js"></script>
+
+
+</body>
+
+</html>
