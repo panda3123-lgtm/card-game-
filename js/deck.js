@@ -1,30 +1,178 @@
-// 現在のデッキ
+// ===============================
+// エラッタオリジナリティ
+// デッキ管理
+// ===============================
+
 
 let deck = [];
 
 
 
+// 制限カード
+
+const limitedCards = [
+
+    "これあげる",
+    "小夜峰綾香",
+    "シュラフ・アリーナ"
+
+];
+
+
+
+// 準制限カード
+
+const semiLimitedCards = [
+
+    "ネズミ3.57864"
+
+];
+
+
+
+
+// カード一覧
+
+let allCards = [];
+
+
+
+
+
+// cards.json読み込み
+
+fetch("cards.json")
+
+.then(response => response.json())
+
+.then(data => {
+
+    allCards = data;
+
+    showCards();
+
+});
+
+
+
+
+
+
+
+// カード一覧表示
+
+function showCards(){
+
+
+    const list =
+    document.getElementById(
+        "card-list"
+    );
+
+
+    if(!list) return;
+
+
+
+    list.innerHTML = "";
+
+
+
+    allCards.forEach(cardName => {
+
+
+        const button =
+        document.createElement("button");
+
+
+        button.textContent =
+        cardName;
+
+
+
+        button.onclick = function(){
+
+            addCard(cardName);
+
+        };
+
+
+
+        list.appendChild(button);
+
+
+    });
+
+}
+
+
+
+
+
+
+
+
+// 最大枚数取得
+
+function getMaxCopies(cardName){
+
+
+    if(
+        limitedCards.includes(cardName)
+    ){
+
+        return 1;
+
+    }
+
+
+
+    if(
+        semiLimitedCards.includes(cardName)
+    ){
+
+        return 2;
+
+    }
+
+
+
+    return 3;
+
+}
+
+
+
+
+
+
+
+
+
 // カード追加
 
-function addCard(cardName) {
+function addCard(cardName){
 
 
-    // 同名カード制限
     const count =
-        deck.filter(
-            card => card === cardName
-        ).length;
+    deck.filter(
+        card => card === cardName
+    ).length;
 
 
-    if(count >= 3){
+
+    if(
+        count >= getMaxCopies(cardName)
+    ){
 
         alert(
-            "同名カードは3枚までです"
+            "このカードはこれ以上入れられません"
         );
 
         return;
 
     }
+
 
 
     deck.push(cardName);
@@ -36,23 +184,27 @@ function addCard(cardName) {
 
 
 
+
+
+
+
+
 // カード削除
 
-function removeCard(cardName) {
+function removeCard(cardName){
 
 
     const index =
-        deck.indexOf(cardName);
+    deck.indexOf(cardName);
+
 
 
     if(index !== -1){
 
-        deck.splice(
-            index,
-            1
-        );
+        deck.splice(index,1);
 
     }
+
 
 
     updateDeckDisplay();
@@ -61,62 +213,108 @@ function removeCard(cardName) {
 
 
 
+
+
+
+
+
 // デッキ表示更新
 
 function updateDeckDisplay(){
 
 
-    const deckList =
-        document.getElementById(
-            "deck-list"
+    const list =
+    document.getElementById(
+        "deck-list"
+    );
+
+
+    const count =
+    document.getElementById(
+        "deck-count"
+    );
+
+
+
+    if(!list) return;
+
+
+
+    list.innerHTML = "";
+
+
+
+    deck.forEach(card => {
+
+
+        const button =
+        document.createElement("button");
+
+
+        button.textContent =
+        card;
+
+
+
+        button.onclick = function(){
+
+            removeCard(card);
+
+        };
+
+
+
+        list.appendChild(button);
+
+
+    });
+
+
+
+    if(count){
+
+        count.textContent =
+        deck.length;
+
+    }
+
+}
+
+
+
+
+
+
+
+// 保存前チェック
+
+function checkDeck(){
+
+
+    if(deck.length < 35){
+
+        alert(
+            "デッキは35枚以上必要です"
         );
 
-
-    const deckCount =
-        document.getElementById(
-            "deck-count"
-        );
-
-
-    if(deckList){
-
-        deckList.innerHTML = "";
-
-
-        deck.forEach(card => {
-
-
-            const item =
-                document.createElement(
-                    "p"
-                );
-
-
-            item.textContent =
-                card;
-
-
-            item.onclick =
-                function(){
-
-                    removeCard(card);
-
-                };
-
-
-            deckList.appendChild(item);
-
-
-        });
+        return false;
 
     }
 
 
-    if(deckCount){
 
-        deckCount.textContent =
-            deck.length;
+    if(deck.length > 60){
+
+        alert(
+            "デッキは60枚以下です"
+        );
+
+        return false;
 
     }
+
+
+
+    return true;
 
 }
