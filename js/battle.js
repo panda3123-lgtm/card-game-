@@ -1,10 +1,43 @@
-// ===============================
+// =================================
 // エラッタオリジナリティ
-// バトル処理
-// ===============================
+// battle.js
+// =================================
 
 
-let cards = [];
+let cardList = [];
+
+
+// プレイヤーデータ
+
+let player = {
+
+    lp:8000,
+
+    cost:1,
+
+    hand:[],
+
+    field:[],
+
+    trap:[],
+
+    deck:[]
+
+};
+
+
+
+// 相手
+
+let enemy = {
+
+    lp:8000,
+
+    field:[]
+
+};
+
+
 
 
 
@@ -12,13 +45,13 @@ let cards = [];
 
 fetch("cards.json")
 
-.then(response => response.json())
+.then(res => res.json())
 
 .then(data => {
 
-    cards = data;
+    cardList = data;
 
-    updateHand();
+    startGame();
 
 });
 
@@ -26,16 +59,76 @@ fetch("cards.json")
 
 
 
+// ゲーム開始
 
-// カード情報取得
-
-function getCardData(name){
+function startGame(){
 
 
-    return cards.find(
+    player.deck = [...cardList];
 
-        card => card.name === name
 
+    shuffle(player.deck);
+
+
+
+    // 初期手札5枚
+
+    for(let i=0;i<5;i++){
+
+        drawCard();
+
+    }
+
+
+    updateHand();
+
+
+}
+
+
+
+
+
+
+// シャッフル
+
+function shuffle(array){
+
+    for(let i=array.length-1;i>0;i--){
+
+        const j =
+        Math.floor(Math.random()*(i+1));
+
+
+        [array[i],array[j]]
+        =
+        [array[j],array[i]];
+
+    }
+
+}
+
+
+
+
+
+
+// ドロー
+
+function drawCard(){
+
+
+    if(player.deck.length===0){
+
+        alert("デッキ切れ");
+
+        return;
+
+    }
+
+
+    player.hand.push(
+        player.deck.pop()
     );
 
 
@@ -53,42 +146,36 @@ function getCardData(name){
 function updateHand(){
 
 
-    const handZone =
+    const hand =
     document.getElementById(
         "hand-zone"
     );
 
 
-    if(!handZone) return;
+    hand.innerHTML="";
 
 
 
-    handZone.innerHTML = "";
+    player.hand.forEach(card=>{
 
 
-
-    player.hand.forEach(card => {
-
-
-        const button =
+        let btn =
         document.createElement("button");
 
 
-
-        button.textContent =
-        card.name ?? card;
-
+        btn.innerHTML =
+        card.name;
 
 
-        button.onclick = function(){
 
-            playCard(card);
+        btn.onclick = ()=>{
+
+            useCard(card);
 
         };
 
 
-
-        handZone.appendChild(button);
+        hand.appendChild(btn);
 
 
     });
@@ -105,23 +192,13 @@ function updateHand(){
 
 // カード使用
 
-function playCard(card){
+function useCard(card){
 
 
 
-    const cardData =
-    typeof card === "string"
-    ? getCardData(card)
-    : card;
+    if(player.cost < card.cost){
 
-
-
-    if(!cardData){
-
-        console.log(
-            "カード情報なし",
-            card
-        );
+        alert("コスト不足");
 
         return;
 
@@ -130,94 +207,56 @@ function playCard(card){
 
 
 
-    if(player.cost < cardData.cost){
-
-
-        alert(
-            "コスト不足"
-        );
-
-        return;
-
-    }
-
-
-
-
-
-    player.cost -= cardData.cost;
+    player.cost -= card.cost;
 
 
 
     // 手札から削除
 
-    const index =
-    player.hand.indexOf(card);
-
-
-
-    if(index !== -1){
-
-        player.hand.splice(
-            index,
-            1
-        );
-
-    }
+    player.hand =
+    player.hand.filter(
+        c=>c !== card
+    );
 
 
 
 
 
-
-
-    if(cardData.type === "monster"){
-
-
-        summonMonster(
-            player,
-            cardData
-        );
-
-
-    }
+    switch(card.type){
 
 
 
-    else if(cardData.type === "magic"){
+        case "モンスター":
+
+            summon(card);
+
+            break;
 
 
-        activateMagic(
-            cardData
-        );
+
+        case "魔法":
+
+            magic(card);
+
+            break;
+
+
+
+        case "トラップ":
+
+            trap(card);
+
+            break;
 
 
     }
-
-
-
-    else if(cardData.type === "trap"){
-
-
-        setTrap(
-            player,
-            cardData
-        );
-
-
-    }
-
 
 
 
     updateHand();
 
-    updateScreen();
-
 
 }
-
-
 
 
 
@@ -227,33 +266,38 @@ function playCard(card){
 
 // モンスター召喚
 
-function summonMonster(player,card){
-
+function summon(card){
 
 
     player.field.push(card);
 
 
 
-    const zone =
+    let zone =
     document.getElementById(
         "player-monster-zone"
     );
 
 
 
-    const view =
+    let div =
     document.createElement("div");
 
 
+    div.innerHTML =
+    `
+    <img src="images/${card.image}" width="100">
+    <br>
+    ${card.name}
+    `;
 
-    view.textContent =
-    card.name;
+
+
+    zone.appendChild(div);
 
 
 
-    zone.appendChild(view);
-
+    activateEffect(card);
 
 }
 
@@ -262,23 +306,17 @@ function summonMonster(player,card){
 
 
 
+// 魔法
 
-
-
-// 魔法発動
-
-function activateMagic(card){
-
+function magic(card){
 
 
     console.log(
-        card.name+
-        "を発動"
+        card.name+"発動"
     );
 
 
-
-    // 後でeffect.jsへ
+    activateEffect(card);
 
 }
 
@@ -288,22 +326,41 @@ function activateMagic(card){
 
 
 
+// トラップ
 
-
-// トラップセット
-
-function setTrap(player,card){
-
+function trap(card){
 
 
     player.trap.push(card);
 
 
+    console.log(
+        card.name+"セット"
+    );
+
+
+}
+
+
+
+
+
+
+
+// 効果処理入口
+
+function activateEffect(card){
+
+
 
     console.log(
-        card.name+
-        "をセット"
+        "効果確認:",
+        card.name
     );
+
+
+
+    // ここに名前判定を追加していく
 
 
 }
