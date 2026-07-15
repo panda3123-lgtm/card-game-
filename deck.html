@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>デッキ編集 - エラッタオリジナリティ</title>
+    <title>デッキ編集</title>
 
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -13,76 +13,57 @@
 
 <body>
 
-<main id="deck-screen">
+<main>
+
+<h1>
+デッキ編集
+</h1>
 
 
-    <h1>
-        デッキ編集
-    </h1>
+<p>
+デッキ枚数：
+<span id="deck-count">0</span>
+枚
+</p>
 
 
-    <p>
-        デッキ枚数：
-        <span id="deck-count">0</span>
-        枚
-    </p>
+<h2>
+カード一覧
+</h2>
 
 
-    <section>
+<div id="card-list">
 
-        <h2>
-            所持カード
-        </h2>
-
-        <div id="card-list">
-
-            <!-- カード一覧表示 -->
-
-        </div>
-
-    </section>
+</div>
 
 
 
-    <section>
-
-        <h2>
-            デッキ
-        </h2>
+<h2>
+現在のデッキ
+</h2>
 
 
-        <div id="deck-list">
+<div id="deck-list">
 
-            <!-- デッキ内容表示 -->
-
-        </div>
-
-
-    </section>
+</div>
 
 
 
-    <button id="save-deck">
-
-        デッキ保存
-
-    </button>
+<button onclick="saveDeck()">
+保存
+</button>
 
 
-    <button onclick="location.href='menu.html'">
-
-        戻る
-
-    </button>
+<button onclick="location.href='menu.html'">
+戻る
+</button>
 
 
 </main>
 
 
-
 <script src="js/deck.js"></script>
 <script src="js/save.js"></script>
-
 
 </body>
 
